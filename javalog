@@ -1,0 +1,29 @@
+import java.util.logging.Logger;
+import java.util.logging.FileHandler;
+import java.util.logging.SimpleFormatter;
+
+public class LogFileSample {
+    private static final Logger LOGGER = Logger.getLogger(LogFileSample.class.getName());
+
+    public static void main(String[] args) {
+        try {
+            // 1. Create a FileHandler that writes to "app.log"
+            FileHandler fileHandler = new FileHandler("app.log", true);
+            
+            // 2. Format the output as a simple text string
+            fileHandler.setFormatter(new SimpleFormatter());
+            
+            // 3. Attach handler to the Logger
+            LOGGER.addHandler(fileHandler);
+
+            // 4. Log messages
+            LOGGER.info("Application has started.");
+            LOGGER.warning("This is a warning message!");
+
+       
+        }
+    }
+error
+installing packages
+installed 
+success
