@@ -1,0 +1,15 @@
+name: Pull Request demo
+
+on:
+  pull_request:
+    branches: ["main"]
+
+jobs:
+   pull:
+     runs-on: ubuntu-latest
+
+     steps:
+       - name: Pull Request Demo
+         run: | 
+           echo "Pull Request Demo"
+           exit 1
