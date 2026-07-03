@@ -21,7 +21,7 @@ jobs:
 
         - name: Run Application
           run: | 
-            node app.js
+            node app.js &
             sleep 5 
             curl http://localhost:8080
             curl http://localhost:8080/health
