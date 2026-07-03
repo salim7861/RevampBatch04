@@ -1,0 +1,23 @@
+name: Sonarqube pipeline
+
+on:
+  pull_request:
+    branches: ["main"]
+  workflow_dispatch:
+
+jobs:
+  sonarqube:
+     runs-on: [self-hosted, wsl-salim]
+
+     steps:
+       - name: Clone code
+         uses: actions/checkout@v7
+
+       - name: Sonarqube Scan
+         uses: SonarSource/sonarqube-scan-action@v8
+         with:
+           args: >
+              -Dsonar.projectKey=NodeApp \
+              -Dsonar.sources=. \
+              -Dsonar.host.url=http://localhost:9000 \
+              -Dsonar.login=sqp_fce491fcf1fe68f488b420a91e8b00227ed489e9
