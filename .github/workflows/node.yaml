@@ -11,8 +11,19 @@ jobs:
         - name: Clone code
           uses: actions/checkout@v7
 
+        - name: Node install
+          uses: actions/setup-node@v6
+          with:
+            node-version: 24
+        
         - name: Install Dependencies
           run: npm install
 
         - name: Run Application
-          run: node app.js
+          run: | 
+            node app.js
+            sleep 5 
+            curl http://localhost:8080
+            curl http://localhost:8080/health
+            pkill -f "node app.js"
+            
