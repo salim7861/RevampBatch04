@@ -1,0 +1,18 @@
+name: Basic Node pipeline
+
+on:
+   workflow_dispatch:
+
+jobs:
+   node:
+     runs-on: [self-hosted, wsl-salim]
+
+     steps:
+        - name: Clone code
+          uses: actions/checkout@v7
+
+        - name: Install Dependencies
+          run: npm install
+
+        - name: Run Application
+          run: node app.js
