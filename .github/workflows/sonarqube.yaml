@@ -17,7 +17,7 @@ jobs:
          uses: SonarSource/sonarqube-scan-action@v8
          with:
            args: >
-              -Dsonar.projectKey=NodeApp \
-              -Dsonar.sources=. \
-              -Dsonar.host.url=http://localhost:9000 \
-              -Dsonar.login=sqp_fce491fcf1fe68f488b420a91e8b00227ed489e9
+              -Dsonar.projectKey=NodeApp 
+              -Dsonar.sources=. 
+              -Dsonar.host.url=https://unlisted-canon-glancing.ngrok-free.dev 
+              -Dsonar.login=sqp_e313110d8e5feeaa4d499ea229c3be9aaf39b96a
