@@ -19,5 +19,5 @@ jobs:
            args: >
               -Dsonar.projectKey=NodeApp 
               -Dsonar.sources=. 
-              -Dsonar.host.url=https://unlisted-canon-glancing.ngrok-free.dev 
-              -Dsonar.login=sqp_e313110d8e5feeaa4d499ea229c3be9aaf39b96a
+              -Dsonar.host.url=${{ vars.SONAR_HOST_URL }}
+              -Dsonar.login=${{ secrets.SONAR_TOKEN}}
