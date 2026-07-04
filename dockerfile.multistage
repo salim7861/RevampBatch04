@@ -1,0 +1,17 @@
+FROM node:20-alpine AS build
+WORKDIR /app
+COPY package*.json ./
+RUN npm install --only=production
+
+FROM node:20-alpine
+WORKDIR /app
+COPY --from=build /app/node_modules ./node_modules
+COPY app.js ./
+COPY package.json ./ 
+EXPOSE 8080
+RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+RUN mkdir -p /app//logs
+RUN chown -R appuser:appgroup /app/logs
+USER appuser
+ENTRYPOINT ["node"]
+CMD ["app.js", "development"]
