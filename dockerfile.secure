@@ -1,0 +1,6 @@
+FROM node:lts-alpine3.24
+WORKDIR /app
+COPY . .
+EXPOSE 8080
+ENTRYPOINT ["node"]
+CMD ["server.js"]
