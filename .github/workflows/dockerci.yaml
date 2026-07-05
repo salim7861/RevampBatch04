@@ -23,7 +23,7 @@ jobs:
          run: docker build -f dockerfile.multistage.secured -t dockerfile .
 
        - name: Tag Docker Image
-         run: 
+         run: |
            SHORT_SHA=${GUTHUB_SHA::7}
            docker tag dockerfile ${{ vars.DOCKERHUB_USERNAME }}/nodeapp4:$SHORT_SHA
            
