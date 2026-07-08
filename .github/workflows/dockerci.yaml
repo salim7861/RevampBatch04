@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  sonarqube:
+  dockerci:
      runs-on: [self-hosted, wsl-salim]
 
      steps:
@@ -24,10 +24,10 @@ jobs:
 
        - name: Tag Docker Image
          run: |
-           SHORT_SHA=${GITHUB_SHA::7}
-           docker tag dockerfile ${{ vars.DOCKERHUB_USERNAME }}/nodeapp4:$SHORT_SHA
+             echo "SHORT_SHA=${GITHUB_SHA::7}" >> $GITHUB_ENV
+             docker tag dockerfile ${{ vars.DOCKERHUB_USERNAME }}/nodeapp4:${{ env.SHORT_SHA }}
            
        -  name: Push Image
           run: |
-            docker push ${{ vars.DOCKERHUB_USERNAME }}/nodeapp4:$SHORT_SHA
+            docker push ${{ vars.DOCKERHUB_USERNAME }}/nodeapp4:${{ env.SHORT_SHA }}
         
