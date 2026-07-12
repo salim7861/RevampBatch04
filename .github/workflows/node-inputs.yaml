@@ -1,0 +1,48 @@
+name: input Node pipeline
+
+on:
+   workflow_dispatch:
+     inputs:
+         environment:
+          description: "choose which environment to use/deploy"
+          required: true
+          default: "development"
+          type: choice
+          options:
+            - development
+            - production
+         port:
+           description: "choose application port"
+           required: true
+           default: "8080"
+           type: choice
+           options:
+             - "8080"
+             - "5000"
+
+jobs:
+   node:
+     runs-on: [self-hosted, wsl-salim]
+
+     steps:
+        - name: Clone code
+          uses: actions/checkout@v7
+
+        - name: Node install
+          uses: actions/setup-node@v6
+          with:
+            node-version: 24
+        
+        - name: Install Dependencies
+          run: npm install
+
+        - name: Run Application
+          env:
+            PORT: ${{ github.event.inputs.port }}
+          run: | 
+            node app.js ${{ github.event.inputs.environment }} &
+            sleep 5 
+            curl http://localhost:8080
+            curl http://localhost:8080/health
+            pkill -f "node app.js"
+            
