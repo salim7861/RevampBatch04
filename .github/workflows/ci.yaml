@@ -13,6 +13,8 @@ jobs:
 
        - name: Sonarqube Scan
          uses: SonarSource/sonarqube-scan-action@v8
+         env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
          with:
            args: >
               -Dsonar.projectKey=NodeApp 
