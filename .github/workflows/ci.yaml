@@ -2,15 +2,12 @@ name: complete CI pipeline
 
 on:
   workflow_dispatch:
-  push:
-    branches: ["main"]
-  pull_request:
-    branches: ["main"]
+  
 
 jobs:
   sonarqube:
      runs-on: [self-hosted, wsl-salim]
-     if: github.event_name -- 'pull_request'
+   
 
      steps:
        - name: Clone code
@@ -28,8 +25,7 @@ jobs:
 
 
   docker:  
-      runs-on: [self-hosted, wsl-salim]
-      if: github.event_name -- 'push' || github.event_name -- 'workflow_dispatch' 
+     runs-on: [self-hosted, wsl-salim]
  
      steps:
        - name: Clone code
