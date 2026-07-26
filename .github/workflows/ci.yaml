@@ -6,51 +6,50 @@ on:
     branches: ["main"]
   pull_request:
     branches: ["main"]
- 
+
 jobs:
   sonarqube:
-     runs-on: [self-hosted, wsl-salim]
-     if: github.event_name == 'pull_request'   
+    runs-on: [self-hosted, wsl-salim]
+    if: github.event_name == 'pull_request'
 
-     steps:
-       - name: Clone code
-         uses: actions/checkout@v7
+    steps:
+      - name: Clone code
+        uses: actions/checkout@v4
 
-       - name: Sonarqube Scan
-         uses: SonarSource/sonarqube-scan-action@v8
-         with:
-           args: >
-              -Dsonar.projectKey=node 
-              -Dsonar.sources=. 
-              -Dsonar.host.url=${{ vars.SONAR_HOST_URL }}
-              -Dsonar.login=${{ secrets.SONAR_TOKEN}}
-              -Dsonar.qualitygate.wait=true
+      - name: Sonarqube Scan
+        uses: SonarSource/sonarqube-scan-action@v8
+        with:
+          args: >
+            -Dsonar.projectKey=node
+            -Dsonar.sources=.
+            -Dsonar.host.url=${{ vars.SONAR_HOST_URL }}
+            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+            -Dsonar.qualitygate.wait=true
 
+  docker:
+    runs-on: [self-hosted, wsl-salim]
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
 
-  docker:  
-     runs-on: [self-hosted, wsl-salim]
-     if: github.event_name == 'push' || github.event_name == 'workflow_disbatch'
-   
-     steps:
-       - name: Clone code
-         uses: actions/checkout@v7
+    steps:
+      - name: Clone code
+        uses: actions/checkout@v4
 
-       - name: Login to Docker Hub
-         uses: docker/login-action@v4
-         with:
-           username: ${{ vars.DOCKERHUB_USERNAME }}
-           password: ${{ secrets.DOCKERHUB_PASSWORD }}
+      - name: Login to Docker Hub
+        uses: docker/login-action@v4
+        with:
+          username: ${{ vars.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
-       - name: Build Docker Image
-         run: docker build -f dockerfile.multistage.secured -t dockerfile .
+      - name: Build Docker Image
+        run: docker build -f dockerfile.multistage.secured -t dockerfile .
 
-       - name: Tag Docker Image
-         id: tag
-         run: |
-             echo "sha=${GITHUB_SHA::7}" >> "$GITHUB_OUTPUT"
-             docker tag dockerfile ${{ vars.DOCKERHUB_USERNAME }}/nodeapp4:${GITHUB_SHA::7}
-           
-       -  name: Push Image
-          run: |
-            docker push ${{ vars.DOCKERHUB_USERNAME }}/nodeapp4:${{ steps.tag.outputs.sha }}
+      - name: Tag Docker Image
+        id: tag
+        run: |
+          echo "sha=${GITHUB_SHA::7}" >> "$GITHUB_OUTPUT"
+          docker tag dockerfile ${{ vars.DOCKERHUB_USERNAME }}/nodeapp4:${GITHUB_SHA::7}
+
+      - name: Push Image
+        run: |
+          docker push ${{ vars.DOCKERHUB_USERNAME }}/nodeapp4:${{ steps.tag.outputs.sha }}
 
