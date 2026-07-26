@@ -1,10 +1,9 @@
 name: Docker CI pipeline
 
 on:
-  push: 
- # pull_request:
-    branches: ["main"]
-  workflow_dispatch:
+ pull_request:
+  branches: ["main"]
+   workflow_dispatch:
 
 jobs:
   dockerci:
