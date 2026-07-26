@@ -1,16 +1,16 @@
 name: Docker Build and Push
 
 inputs:
- username:
-     description: DockerHub username
-     required: true
-password:
-    description: DockerHub password
+   username:
+    description: DockerHub username
     required: true
-    
+   password:
+     description: DockerHub password
+    required: true
+
 runs:
-  using: "composite"
-  steps:
+   using: "composite"
+   steps:
      - name: Login to Docker Hub
        uses: docker/login-action@v4
        with:
@@ -18,14 +18,17 @@ runs:
          password: ${{ inputs.password }}
 
      - name: Build Docker Image
+       shell: bash
        run: docker build -f dockerfile.multistage.secured -t dockerfile .
 
      - name: Tag Docker Image
        id: tag
+       shell: bash
        run: |
-          echo "sha=${GITHUB_SHA::7}" >> "$GITHUB_OUTPUT"
-          docker tag dockerfile ${{ vars.DOCKERHUB_USERNAME }}/nodeapp4:${GITHUB_SHA::7}
+        echo "sha=${GITHUB_SHA::7}" >> "$GITHUB_OUTPUT"
+        docker tag dockerfile ${{ inputs.username }}/nodeapp4:${GITHUB_SHA::7}
 
      - name: Push Image
-      run: |
-           docker push ${{ vars.DOCKERHUB_USERNAME }}/nodeapp4:${{ steps.tag.outputs.sha }}
+       shell: bash
+       run: |
+        docker push ${{ inputs.username }}/nodeapp4:${{ steps.tag.outputs.sha }}
